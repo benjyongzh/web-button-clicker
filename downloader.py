@@ -9,7 +9,7 @@ import glob
 import os
 import shutil
 
-
+# set args
 parser = argparse.ArgumentParser(description="Script that clicks a button on a URL")
 parser.add_argument("--url", required=True, type=str,help="Enter URL of website with button to click")
 parser.add_argument("--buttonclass", required=True, type=str, help="Enter a unique classname of HTML element of button to click")
@@ -17,8 +17,7 @@ parser.add_argument("--target", default="downloads", type=str, help="Enter relat
 parser.add_argument("--filename", default="downloadfile", type=str, help="Enter filename to save as")
 args = parser.parse_args()
 
-# print("args: ",args.url, args.buttonclass, args.target)
-
+#webdriver options
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
 options.add_argument("--no-sandbox")
@@ -41,6 +40,7 @@ driver = webdriver.Chrome(options=options)
 #button className = "css-1u67ipt"
 #python3 downloader.py --url=https://beta.data.gov.sg/collections/2033/datasets/d_16b157c52ed637edd6ba1232e026258d/view --buttonclass=css-1u67ipt --target=building-polygons --filename=building-polygons
 
+# start download
 driver.get(args.url)
 WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, args.buttonclass)))
 driver.find_element(By.CLASS_NAME, args.buttonclass).click()
@@ -55,10 +55,9 @@ datetime_filename_format = "%Y%m%d-%H%M%S"
 date_text = currentDateTime.strftime(datetime_filename_format)
 filename = date_text + "_" + args.filename
 
-# change file name
+# change filename
 files_path = os.path.join(args.target, '*')
 list_of_files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True) 
 latest_file = list_of_files[0]
 oldext = os.path.splitext(latest_file)[1]
-# os.rename(latest_file, filename + oldext)
 shutil.move(latest_file,os.path.join(args.target,filename + oldext))
