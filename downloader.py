@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -54,16 +55,6 @@ prefs = {"profile.default_content_settings.popups": 0,
         "download.directory_upgrade": True}
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options=options)
-
-#resale prices
-#https://beta.data.gov.sg/collections/189/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view
-#button className = "css-1u67ipt"
-#python3 downloader.py --url=https://beta.data.gov.sg/collections/189/datasets/d_8b84c4ee58e3cfc0ece0d773c8ca6abc/view --buttonclass=css-1u67ipt --target=resale-prices --filename=resale-prices
-
-#HDB building polygons
-#https://beta.data.gov.sg/collections/2033/datasets/d_16b157c52ed637edd6ba1232e026258d/view
-#button className = "css-1u67ipt"
-#python3 downloader.py --url=https://beta.data.gov.sg/collections/2033/datasets/d_16b157c52ed637edd6ba1232e026258d/view --buttonclass=css-1u67ipt --target=building-polygons --filename=building-polygons
 
 # start download
 driver.get(args.url)
