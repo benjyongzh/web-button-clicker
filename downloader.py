@@ -9,6 +9,7 @@ from datetime import datetime
 import glob
 import os
 import shutil
+from subprocess import call
 
 def get_current_file_count(target_dir):
         if os.path.exists(target_dir):
@@ -78,3 +79,6 @@ list_of_files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=Tru
 latest_file = list_of_files[0]
 oldext = os.path.splitext(latest_file)[1]
 shutil.move(latest_file,os.path.join(args.target,filename + oldext))
+
+# add id columns
+call(["python3", "add_id.py", "--filename=" + args.target + "/" + filename])
