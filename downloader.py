@@ -9,7 +9,7 @@ from datetime import datetime
 import glob
 import os
 import shutil
-from subprocess import call
+from add_id import add_id_rows
 
 def get_current_file_count(target_dir):
         if os.path.exists(target_dir):
@@ -81,4 +81,4 @@ oldext = os.path.splitext(latest_file)[1]
 shutil.move(latest_file,os.path.join(args.target,filename + oldext))
 
 # add id columns
-call(["python3", "add_id.py", "--filename=" + args.target + "/" + filename])
+add_id_rows(args.target + "/" + filename, "_with-id")
