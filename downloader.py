@@ -4,42 +4,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import argparse
-import time
-from datetime import datetime
 import glob
 import os
 import shutil
-from add_id import add_id_rows
-
-def get_current_file_count(target_dir):
-        if os.path.exists(target_dir):
-                files = os.listdir(target_dir)
-                return len(files)
-        else:
-                return 0
-
-def wait_for_download(timeout, target_dir, nfiles):
-        seconds = 0
-        dl_wait = True
-        while dl_wait and seconds < timeout:
-                time.sleep(1)
-                dl_wait = False
-                if os.path.exists(target_dir):
-                        files = os.listdir(target_dir)
-                        if len(files) == nfiles:
-                                dl_wait = True
-                        for fname in files:
-                                if fname.endswith('.crdownload'):
-                                        dl_wait = True
-                else:
-                        dl_wait = True
-                seconds += 1
+from utils import get_current_file_count,wait_for_download,format_filename,add_id_rows,get_latest_file
 
 # set args
 parser = argparse.ArgumentParser(description="Script that clicks a button on a URL to download a file")
 parser.add_argument("--url", required=True, type=str,help="Enter URL of website with button to click")
-parser.add_argument("--buttonclass", required=True, type=str, help="Enter a unique classname of HTML element of button to click")
-parser.add_argument("--target", default="downloads", type=str, help="Enter relative file location to download file to")
+parser.add_argument("--buttonxpath", required=True, type=str, help="Enter XPath of HTML element of button to click")
+parser.add_argument("--target", default="./downloads/", type=str, help="Enter relative file location to download file to")
 parser.add_argument("--filename", default="downloadfile", type=str, help="Enter filename to save as")
 parser.add_argument("--timeout", default=20, type=int, help="Enter timeout for downloading file")
 args = parser.parse_args()
@@ -53,32 +27,36 @@ options.add_argument("--disable-dev-shm-usage")
 prefs = {"profile.default_content_settings.popups": 0,    
         "download.default_directory":args.target, ### Set the path accordingly
         "download.prompt_for_download": False, ## change the downpath accordingly
-        "download.directory_upgrade": True}
+        }
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options=options)
 
 # start download
 driver.get(args.url)
-WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, args.buttonclass)))
-driver.find_element(By.CLASS_NAME, args.buttonclass).click()
+WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, args.buttonxpath))).click()
 
 # wait until download is done
 file_count = get_current_file_count(args.target)
 wait_for_download(args.timeout, args.target, file_count)
 driver.quit()
+print("file downloaded to: ", args.target)
+
+print(get_latest_file(args.target))
+
+'''
 
 # filename formatting
-currentDateTime = datetime.now()
-datetime_filename_format = "%Y%m%d-%H%M%S"
-date_text = currentDateTime.strftime(datetime_filename_format)
-filename = date_text + "_" + args.filename
+filename = format_filename(args.filename)
 
 # change filename
 files_path = os.path.join(args.target, '*')
+print(files_path)
 list_of_files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)
+print("number of files:", len(list_of_files))
 latest_file = list_of_files[0]
 oldext = os.path.splitext(latest_file)[1]
 shutil.move(latest_file,os.path.join(args.target,filename + oldext))
 
 # add id columns
 add_id_rows(args.target + "/" + filename, "_with-id")
+'''
