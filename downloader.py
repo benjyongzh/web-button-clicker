@@ -13,20 +13,21 @@ from utils import get_current_file_count,wait_for_download,format_filename,add_i
 parser = argparse.ArgumentParser(description="Script that clicks a button on a URL to download a file")
 parser.add_argument("--url", required=True, type=str,help="Enter URL of website with button to click")
 parser.add_argument("--buttonxpath", required=True, type=str, help="Enter XPath of HTML element of button to click")
-parser.add_argument("--target", default="./downloads/", type=str, help="Enter relative file location to download file to")
+parser.add_argument("--target", default="Downloads/", type=str, help="Enter relative file location to download file to")
 parser.add_argument("--filename", default="downloadfile", type=str, help="Enter filename to save as")
 parser.add_argument("--timeout", default=20, type=int, help="Enter timeout for downloading file")
 args = parser.parse_args()
 
 #webdriver options
 options = webdriver.ChromeOptions()
-options.add_argument("--headless")
-options.add_argument("--no-sandbox")
+options.add_argument("--headless=new")
 options.add_argument("--disable-dev-shm-usage")
 # options.add_experimental_option('excludeSwitches', ['enable-logging'])
-prefs = {"profile.default_content_settings.popups": 0,    
-        "download.default_directory":args.target, ### Set the path accordingly
+prefs = {"download.default_directory":args.target, ### Set the path accordingly
+         "savefile.default_directory": args.target,
         "download.prompt_for_download": False, ## change the downpath accordingly
+        "download.directory_upgrade": True,
+        "profile.default_content_settings.popups":0
         }
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options=options)
