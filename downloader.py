@@ -21,13 +21,18 @@ args = parser.parse_args()
 #webdriver options
 options = webdriver.ChromeOptions()
 options.add_argument("--headless=new")
-options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-notifications")
+# options.add_argument("--disable-dev-shm-usage")
 # options.add_experimental_option('excludeSwitches', ['enable-logging'])
-prefs = {"download.default_directory":args.target, ### Set the path accordingly
-         "savefile.default_directory": args.target,
-        "download.prompt_for_download": False, ## change the downpath accordingly
-        "download.directory_upgrade": True,
-        "profile.default_content_settings.popups":0
+prefs = {
+        "download":{
+                "default_directory":args.target, ### Set the path accordingly
+                "directory_upgrade": True,
+                "prompt_for_download": False, ## change the downpath accordingly
+                "extensions_to_open": ""
+                },
+        "savefile.default_directory": args.target,
+        "profile.default_content_settings.popups": 0
         }
 options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(options=options)
@@ -42,22 +47,19 @@ wait_for_download(args.timeout, args.target, file_count)
 driver.quit()
 print("file downloaded to: ", args.target)
 
-print(get_latest_file(args.target))
-
-'''
+# print(get_latest_file(args.target))
 
 # filename formatting
 filename = format_filename(args.filename)
 
 # change filename
 files_path = os.path.join(args.target, '*')
-print(files_path)
+# print(files_path)
 list_of_files = sorted(glob.iglob(files_path), key=os.path.getctime, reverse=True)
-print("number of files:", len(list_of_files))
+# print("number of files:", len(list_of_files))
 latest_file = list_of_files[0]
 oldext = os.path.splitext(latest_file)[1]
 shutil.move(latest_file,os.path.join(args.target,filename + oldext))
 
 # add id columns
 add_id_rows(args.target + "/" + filename, "_with-id")
-'''
