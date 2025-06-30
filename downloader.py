@@ -12,7 +12,7 @@ from utils import get_current_file_count,wait_for_download,format_filename,add_i
 # set args
 parser = argparse.ArgumentParser(description="Script that clicks a button on a URL to download a file")
 parser.add_argument("--url", required=True, type=str,help="Enter URL of website with button to click")
-parser.add_argument("--buttonxpath", required=True, type=str, help="Enter XPath of HTML element of button to click")
+parser.add_argument("--buttonselector", required=True, type=str, help="Enter CSS selector of HTML element of button to click")
 parser.add_argument("--target", default="Downloads/", type=str, help="Enter relative file location to download file to")
 parser.add_argument("--filename", default="downloadfile", type=str, help="Enter filename to save as")
 parser.add_argument("--timeout", default=20, type=int, help="Enter timeout for downloading file")
@@ -39,7 +39,7 @@ driver = webdriver.Chrome(options=options)
 
 # start download
 driver.get(args.url)
-WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, args.buttonxpath))).click()
+WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, args.buttonselector))).click()
 
 # wait until download is done
 file_count = get_current_file_count(args.target)
