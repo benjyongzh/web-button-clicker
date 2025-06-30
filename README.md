@@ -2,7 +2,16 @@
 
 Simple tool to automate clicking of a button of a specified website to download a file.
 
-`python3 downloader.py <options>`
+### Installation
+1. Clone this repository and create python virtual environment in the root of the repository folder. Assuming you are using Linux, creating the python virtual environment is done with `python -m venv venv`
+2. Open the python venv. `source venv/Scripts/activate`
+3. Install dependencies with `pip install -r requirements.txt`
+
+### Command
+- If you are in the python environment of this folder, do `python downloader.py <options>`
+- If you are using this as a cron/automation script, make sure your bash script either:
+    1. includes `source venv/Scripts/activate` before running downloader.py
+    2. run downloader.py from outside the python virtual environment with `./venv/Scripts/python downloader.py <options>
 
 ### Options
 
