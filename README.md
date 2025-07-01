@@ -3,26 +3,29 @@
 Simple tool to automate clicking of a button of a specified website to download a file.
 
 ### Installation
+
 1. Clone this repository and create python virtual environment in the root of the repository folder. Assuming you are using Linux, creating the python virtual environment is done with `python -m venv venv`
 2. Open the python venv. `source venv/Scripts/activate`
 3. Install dependencies with `pip install -r requirements.txt`
 
 ### Command
+
 - If you are in the python environment of this folder, do `python downloader.py <options>`
 - If you are using this as a cron/automation script, make sure your bash script either:
-    1. includes `source venv/Scripts/activate` before running downloader.py
-    2. run downloader.py from outside the python virtual environment with `./venv/Scripts/python downloader.py <options>
+  1. includes `source venv/Scripts/activate` before running downloader.py
+  2. run downloader.py from outside the python virtual environment with `./venv/Scripts/python downloader.py <options>
 
 ### Options
 
-| Options       | Description                                                  | Optional? | Default value |
-| ------------- | ------------------------------------------------------------ | --------- | ------------- |
-| -h, --help    | show this help message and exit.                             | -         | -             |
-| --url         | Enter URL of website with button to click.                   | Required  | -             |
+| Options          | Description                                                                                                                                                                                                      | Optional? | Default value |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------------- |
+| -h, --help       | show this help message and exit.                                                                                                                                                                                 | -         | -             |
+| --url            | Enter URL of website with button to click.                                                                                                                                                                       | Required  | -             |
 | --buttonselector | Enter a unique CSS selector of HTML element of button to click. (this can be acquired by right-clicking the element of the desired button in the browser devtool's element tab, and clicking `copy -> selector`) | Required  | -             |
-| --target      | Enter relative file location to download file to.            | Optional  | downloads     |
-| --filename    | Enter filename to save as.                                   | Optional  | downloadfile  |
-| --timeout     | Enter timeout for downloading file .                         | Optional  | 20            |
+| --target         | Enter relative file location to download file to.                                                                                                                                                                | Optional  | downloads     |
+| --filename       | Enter filename to save as.                                                                                                                                                                                       | Optional  | downloadfile  |
+| --timeout        | Enter timeout for downloading file.                                                                                                                                                                              | Optional  | 20            |
+| --idcolumn       | Boolean if you want to add an ID column to the .csv file downloaded. `--idcolumn=True`                                                                                                                           | Optional  | False         |
 
 ### Example
 
